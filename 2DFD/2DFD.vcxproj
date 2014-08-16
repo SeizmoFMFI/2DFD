@@ -69,7 +69,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2DFD_sprav_vstup.cpp" />
     <ClCompile Include="auxiliary.cpp" />
     <ClCompile Include="aux_velocity.cpp" />
     <ClCompile Include="bottom_boundary_stress.cpp" />

@@ -2,6 +2,8 @@
 #define NONREFLECTING_H
 #include "global.h"
 
+const static int  attenuate_boundary_n = 100; //180;
+
 extern float stored_u_1_level0[BIGDIM],stored_u_2_level0[BIGDIM],stored_u_3_level0[BIGDIM],
 	  stored_u_mx3_level0[BIGDIM],stored_u_mx2_level0[BIGDIM],stored_u_mx1_level0[BIGDIM],
 	  stored_u_1_level1,stored_u_2_level1,stored_u_3_level1,

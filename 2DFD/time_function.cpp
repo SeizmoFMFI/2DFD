@@ -1,11 +1,13 @@
 #include "global.h"
 
-void Source::vynuluj_time_function(const int nmax) {
+void Source::reset_time_function(const int nmax) {
 	for (int i=0;i<nmax;i++)
 		f[i]=0;
 }
 
-int Source::sprav_time_function() {
+int Source::make_time_function() {
+	reset_time_function();
+
      float aa,bb;
      int ts=0;
 	 if (key_typ_src_function==1) {//_____________________________ KUPPER ___

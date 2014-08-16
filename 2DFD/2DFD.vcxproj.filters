@@ -39,9 +39,6 @@
     <ClCompile Include="time_loop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="2DFD_sprav_vstup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="displacement_int.cpp">
       <Filter>Source Files\update_displacement</Filter>
     </ClCompile>
