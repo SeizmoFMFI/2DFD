@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\inout">
+      <UniqueIdentifier>{149a7b21-a3dc-40c6-9996-f2546ad19139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\update_velocity">
+      <UniqueIdentifier>{7df67535-b825-4136-9b04-334af810268c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\update_displacement">
+      <UniqueIdentifier>{52908115-92fe-4035-b255-8821684b725c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="auxiliary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimalisation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="time_function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="time_loop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="2DFD_sprav_vstup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="displacement_int.cpp">
+      <Filter>Source Files\update_displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="displacement_update.cpp">
+      <Filter>Source Files\update_displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="nonreflecting.cpp">
+      <Filter>Source Files\update_displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="store_boundary.cpp">
+      <Filter>Source Files\update_displacement</Filter>
+    </ClCompile>
+    <ClCompile Include="files.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="aux_velocity.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="bottom_boundary_stress.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="bottom_boundary_velocity.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="free_surface_stress.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="free_surface_velocity.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="horizontal_line.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="interior_velocity.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="interior_stress.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="velocity_update.cpp">
+      <Filter>Source Files\update_velocity</Filter>
+    </ClCompile>
+    <ClCompile Include="record.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="input_data.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="input_model.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="input_receivers.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="input_source.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="IO_state.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="displacement_update.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nonreflecting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimalisation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="receiver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="velocity_update.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
