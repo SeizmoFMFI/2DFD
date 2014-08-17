@@ -12,16 +12,9 @@ time ( &rawtime );
 cout<< ctime (&rawtime)<<endl;
 }
 
-void aux_model_parameters() {
-	co_mu = co_vS*co_vS*co_density;
-	co_lam = co_vP*co_vP*co_density - 2 * co_mu;
-	co_muzx = co_mu;
-	co_lam2mu = co_lam + 2 * co_mu;
-}
-
 void aux_charakteristika() {
 	cout << "Dimensions:   " << h*mx << "m x " << h*mz << "m" << endl;
-	cout << "Grid: " << mx << "x" << mz <<", inhomogeneus part"<<mhom<< endl;
+	cout << "Grid: " << mx << "x" << mz <<", inhomogeneus part"<<l_hom<< endl;
 	cout << "Time:       " << dt*max_num_iter << "ms, iterations: " << max_num_iter << endl;
 }
 
@@ -43,7 +36,6 @@ void set_starting_values() {
 	 co_lam2mu /= h;
 	 co_mu     /= h;
 	 co_lam    /= h;
-	 co_muzx   /= h;
 	 
 	 co_density = dt/(h*co_density);
 

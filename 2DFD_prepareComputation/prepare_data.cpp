@@ -5,7 +5,11 @@ void prepare_data() {
 	int tmp;
 
 	FILE *out = fopen("data.txt","w");
-	tmp = get_input("Number of grid points in X-direction:", 0, 1200);
+	tmp = get_input("Number of grid points in X-direction. Should be odd number.", 1, 1200);
+	if (tmp % 2 == 0) {
+		cout << "should be odd number!" << endl;
+		return;
+	}
 	fprintf(out, "%d\n", tmp);
 
 	tmpf = get_input("Total time [s]:", 0.f, 24*3600.f);

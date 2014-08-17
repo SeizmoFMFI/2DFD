@@ -6,7 +6,7 @@ public:
 	Files files;
 
 	bool load(), load_data(), load_model(), load_sources(), load_receivers();
-	bool prepare_model_for_computation();
+	bool prepare_model_for_computation(const int mmx, const int mml);
 	void record_snapshot(), record_sparse_binary(), record_sparse_txt();
 	void check_recording();
 

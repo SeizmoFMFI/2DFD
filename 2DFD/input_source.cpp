@@ -1,66 +1,74 @@
 #include "global.h"
 
-int n_src,n_rec,key_typ_src;
+int n_src,src_type,src_time_function;
 Source src[50];
-Receiver rec[50];
 
-
-void loadSource() {
+bool InputOutput::load_sources() {
+	int tmp;
 	FILE* in = fopen(files.input_source,"r");
 	if (in == NULL) {
 		cout<<files.input_source<<endl;
 		ERR("No input source file");
+		return false;
 	}
-	
-	tmp = fscanf(in,"%d",&n_src);
-	if (n_src>50) 
-		ERR("Err: privela zdrojov");
-	tmp = fscanf(in,"%d %d",&key_typ_src,&key_typ_src_function);
-	tmp = fscanf(in,"%d",&source_num_active_iter);
+	/*
 
-	int ts = 0;
-	//______________________________________________ SOURCE FUNCTION FROM FILE ___
-	if (key_typ_src==0) {
-		ERR("treba nakodit nacitanie zdrojovovej funkcie v input_source::loadSource");
+	for (int i = 0; i < n_src; i++) {
+	cout << "moment M0 and dip [degrees] of source " << i << ": ";
+	fprintf(out, "%f %f\n", tmpm, tmpd);
+
+	for (int i = 0; i<n_src; i++) {
+	fprintf(out, "%f %f\n", sx, sz);
 	}
+	fclose(out);
+	*/
+	tmp = fscanf(in,"%d",&n_src);
+	if (n_src > 50) {
+		ERR("Err: privela zdrojov");
+		return false;
+	}
+	tmp = fscanf(in,"%d %d",&src_type,&src_time_function);
+	tmp = fscanf(in,"%d",&src_char_time);
 
 	for(int i=0;i<n_src;i++) {
 		tmp = fscanf(in,"%f %f",&src[i].m0,&src[i].dip);
 	}
 
-	load_grid();
 	for(int i=0;i<n_src;i++) {
 		float sx,sz;
 		tmp = fscanf(in,"%f %f",&sx,&sz);
 
-		src[i].x = (int)(sx*(mx-2*optimalisation.attenuate_boundary_n+0.5) + optimalisation.attenuate_boundary_n);
-		src[i].z = (int)(sz*(mz - optimalisation.attenuate_boundary_n+0.5));
+		src[i].x = (int)(sx*(mx-2*attenuate_boundary_n+0.5) + attenuate_boundary_n);
+		src[i].z = (int)(sz*(mz - attenuate_boundary_n+0.5));
 	}
+	fclose(in);
+
 	//______________________________________________ EXPLOSIVE SOURCE ___
-	if (key_typ_src==1)
-	for(int i=0;i<n_src;i++) {
-		src[i].mxx= src[i].m0 / (h*h*h) /2;
-		src[i].mzz= src[i].m0 / (h*h*h) /2;
-		
-		ts = src[i].sprav_time_function();
+	if (src_type == 1) {
+		for (int i = 0; i < n_src; i++) {
+			src[i].mxx = src[i].m0 / (h*h*h) / 2;
+			src[i].mzz = src[i].m0 / (h*h*h) / 2;
+		}
 	}
 
 	//______________________________________________ DOUBLE-COUPLE SOURCE ___
-	if (key_typ_src==2)
-	for(int i=0;i<n_src;i++) {
-		src[i].dip*=PI/180;
-		
-		src[i].mxx= - src[i].m0 * sin(2*src[i].dip)/(h*h*h);
-		src[i].mzx= - src[i].m0 * cos(2*src[i].dip)/(4*h*h*h);
-		src[i].mzz=   src[i].m0 * sin(2*src[i].dip)/(h*h*h);
-		ts = src[i].sprav_time_function();
+	else if (src_type == 2){
+		for (int i = 0; i < n_src; i++) {
+			src[i].dip *= PI / 180;
+
+			src[i].mxx = -src[i].m0 * sin(2 * src[i].dip) / (h*h*h);
+			src[i].mzx = -src[i].m0 * cos(2 * src[i].dip) / (4 * h*h*h);
+			src[i].mzz = src[i].m0 * sin(2 * src[i].dip) / (h*h*h);
+		}
+	}
+	else {
+		ERR("unknown src type");
+		return false;
 	}
 
-    if (source_num_active_iter>19990)
-		ERR("pridlha zdrojova funkcia, zmenit velkost pola");
-    
-	fclose(in);
+	bool ok = true;
+	for (int i = 0; i < n_src; i++)
+		ok &= src[i].make_time_function();
 
-	max_num_iter += (int)(2*ts);
-	//cout<<"i: number of iterations after adding source duration "<<max_num_iter<<endl;
+	return ok;
 }

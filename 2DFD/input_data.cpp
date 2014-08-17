@@ -10,6 +10,10 @@ bool InputOutput::load_data() {
 
 	float time;
 	tmp = fscanf(in, "%d", &mx);
+	if (mx % 2 == 1) {
+		ERR("grid should be odd, not even");
+		return false;
+	}
 	tmp = fscanf(in, "%f", &time);
 	tmp = fscanf(in, "%f", &dt);
 	max_num_iter = (int)(time / dt);
