@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="auxi.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="prepare_data.cpp" />
     <ClCompile Include="prepare_model.cpp" />

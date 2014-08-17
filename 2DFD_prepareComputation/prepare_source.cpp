@@ -7,7 +7,7 @@ void prepare_source() {
 	n_src		= get_input("Number of sources:", 1, 999);
 	src_type	= get_input("Number of sources:\n1 - explosion\n2 - double couple", 1, 2);
 	src_time_function = get_input("Source time function:\n0-read from file\n1-Kupper\n2-Ricker\n3-Gabor\n4-Berlage", 0, 4);
-	src_char_time = get_input("Characteristic time [ms]:", 0, 100000);
+	src_char_time = get_input("Characteristic time [ms]:", 0.f, 100000.f);
 
 	FILE *out = fopen("sources.txt", "w");
 	fprintf(out, "%d\n", n_src);

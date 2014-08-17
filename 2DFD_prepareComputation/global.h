@@ -8,11 +8,8 @@ using namespace std;
 #define SQR(x) (x)*(x)
 
 extern void prepare_model(),prepare_data(),prepare_source(),prepare_receivers(),prepare_grid();
+extern void clear_screen();
 
-void clear_screen() {
-	for (int i = 0; i<50; i++)
-		cout << endl;
-}
 template<class T> T get_input(char* querry, T min_value, T max_value) {
 	//waiting for input until correct value within min-max range is submited
 

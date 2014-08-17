@@ -4,8 +4,6 @@ float bedrock_density, bedrock_vP, bedrock_vS, bedrock_lam, bedrock_mu;
 float model_w, model_h, model_h_hom, dh; //model dimensions [m]
 int mx, mhom, mz; 
 
-float l, m;
-
 #define DIM 1000
 float density_u[DIM][DIM], density_w[DIM][DIM], lam[DIM][DIM], mu[DIM][DIM], muzx[DIM][DIM];
 	/*
@@ -24,9 +22,9 @@ float compute_mu(const float vS, const float density) {
 }
 
 float compute_lam(const float vP, const float density,const float mu) {
-	float lam = SQR(vP)*density - 2 * mu;
-	assert(lam >= 0 && "Heeey, lambda can not be negative! Values of vP and vS are wrong.");
-	return lam;
+	float l = SQR(vP)*density - 2 * mu;
+	assert(l >= 0 && "Heeey, lambda can not be negative! Values of vP and vS are wrong.");
+	return l;
 }
 
 void save_medium() {
@@ -53,23 +51,23 @@ void prepare_hom_medium() {
 }
 
 void prepare_one_layer_medium() {
-	float den, l, m;
+	float den, ll, mm;
 	float vP, vS;
 
 	den = get_input("density of layer [kg/m^3]:", 1000.f, 3000.f);
 	vP = get_input("vP in layer [m/s]:", 200.f, 6000.f);
 	vS = get_input("vS in layer [m/s]:", 0.f, 4000.f);
 
-	m = compute_mu(vS,den);
-	l = compute_lam(vP, den, m);
+	mm = compute_mu(vS,den);
+	ll = compute_lam(vP, den, mm);
 
 	for(int i=0;i<mx;i++) {
 		for(int l=0;l<mhom;l++) {
 			density_u[i][l] = den;
 			density_w[i][l] = den;
-			lam[i][l]       = l;
-			mu[i][l]        = m;
-			muzx[i][l]      = m;
+			lam[i][l]       = ll;
+			mu[i][l]        = mm;
+			muzx[i][l]      = mm;
 		}
 	}
 }
@@ -205,9 +203,13 @@ void prepare_model() {
 
 	dh = get_input("model depth [m]:", model_h_hom, 20000.f);
 
-	mx = model_w / dh;
-	mz = model_h / dh;
-	mhom = model_h_hom / dh;
+	mx = (int) (model_w / dh);
+	mz = (int) (model_h / dh);
+	mhom =(int)(model_h_hom / dh);
+
+	assert(mx*dh == model_w && "model width is not divisible into grid with dh");
+	assert(mz*dh == model_h && "model height is not divisible into grid with dh");
+	assert(mhom*dh == model_h_hom && "inhomogeneous height is not divisible into grid with dh");
 
 	cout << "grid size is " <<mx<<" x "<<mz<< endl;
 	cout << "inhomogeneous part " << mx << " x " << mhom << endl;
