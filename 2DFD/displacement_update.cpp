@@ -1,6 +1,6 @@
 #include "global.h"
 
-void attenuate(const int l) {
+void attenuate_horizontal_line(const int l) {
 	//similar function in displacement_int.cpp
 	float k = ((float)(attenuate_boundary_n - (mz - l))) / attenuate_boundary_n;
 	k = 1 - 0.05*SQR(k);
@@ -36,6 +36,6 @@ void displacement_update() {
   hom_displacement_nonreflecting_mz1();
 
   for (int l = mz - attenuate_boundary_n + 1; l < mz; l++) {
-	  attenuate(l);
+	  attenuate_horizontal_line(l);
   }
 }

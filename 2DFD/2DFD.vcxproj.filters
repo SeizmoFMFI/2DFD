@@ -30,9 +30,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="optimalisation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="time_function.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +96,12 @@
     <ClCompile Include="IO_state.cpp">
       <Filter>Source Files\inout</Filter>
     </ClCompile>
+    <ClCompile Include="io.cpp">
+      <Filter>Source Files\inout</Filter>
+    </ClCompile>
+    <ClCompile Include="nonreflecting_init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="displacement_update.h">
@@ -117,9 +120,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="optimalisation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="receiver.h">

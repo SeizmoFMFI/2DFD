@@ -1,8 +1,18 @@
 #ifndef IO_H
 #define IO_H
 
-extern void loadModel(),loadData(),loadSource(),load_adjoint_source(),load_grid(),loadReceivers();
-extern void record_sparse(int),record_at_receivers(int),record_at_source(int),record_java(const int iter);
-extern int record_every_nth_step;
-extern void main_vstup();
+class InputOutput {
+public:
+	Files files;
+
+	bool load(), load_data(), load_model(), load_sources(), load_receivers();
+	bool prepare_model_for_computation();
+	void record_snapshot(), record_sparse_binary(), record_sparse_txt();
+	void check_recording();
+
+	int record_sparse_every_n_binary, record_sparse_every_n_txt, iter_when_record_snapshot;
+	int sparse_spacing;
+};
+
+extern InputOutput io;
 #endif

@@ -8,7 +8,6 @@ float stored_u_1_level0[BIGDIM],stored_u_2_level0[BIGDIM],stored_u_3_level0[BIGD
 	  stored_u_mz2_level0[BIGDIM],stored_u_mz2_level1[BIGDIM],
 	  stored_u_mz3_level0[BIGDIM],stored_u_mz3_level1[BIGDIM];
 	  
-
 float stored_w_0_level0[BIGDIM],stored_w_1_level0[BIGDIM],stored_w_2_level0[BIGDIM],
 	  stored_w_mx3_level0[BIGDIM],stored_w_mx2_level0[BIGDIM],stored_w_mx1_level0[BIGDIM],
 	  stored_w_0_level1,stored_w_1_level1,stored_w_2_level1,

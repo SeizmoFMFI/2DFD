@@ -64,7 +64,7 @@ void interpolate_muzx_from_mu() {
 }
 
 void add_boundary_layer_to_parameter(float a[][BIGDIM]) {
-	const int s = optimalisation.attenuate_boundary_n;
+	const int s = attenuate_boundary_n;
 	//move to the right
 	for(int i=mx-1;i>=0;i--)
 	for(int l=l_hom-1;l>=0;l--)
@@ -80,24 +80,11 @@ void add_boundary_layer_to_parameter(float a[][BIGDIM]) {
 	for(int l=0;l<l_hom;l++)
 		a[i][l] = a[mx+s-1][l];
 
-	//bottom is hom - not needed
-	/*
-	for(int i=s;i<mx+s;i++)
-	for(int l=l_hom;l<l_hom+s;l++)
-		a[i][l] = a[i][l_hom-1];
-
-	for(int i=0;i<s;i++)
-	for(int l=0;l<l_hom+s;l++)
-		a[i][l] = a[s][l];
-
-	for(int i=mx+s;i<mx+2*s;i++)
-	for(int l=0;l<l_hom+s;l++)
-		a[i][l] = a[mx+s-1][l];
-	*/
+	//bottom is hom - does not need to add layers
 }
 
 void add_boundary_layer() {
-	if (optimalisation.attenuate_boundary_n<1)
+	if (attenuate_boundary_n<1)
 		return;
 
 	add_boundary_layer_to_parameter(density_u);
@@ -105,10 +92,8 @@ void add_boundary_layer() {
 	add_boundary_layer_to_parameter(lam);
 	add_boundary_layer_to_parameter(mu);
 
-	if (optimalisation.attenuate_boundary_n>0) {
-		mx += 2*optimalisation.attenuate_boundary_n;
-		mz +=   optimalisation.attenuate_boundary_n;
-	}
+	mx += 2*attenuate_boundary_n;
+	mz +=   attenuate_boundary_n;
 
 	INFO1 cout<<"i: boundaries added, new model size "<<mx<<" x "<<mz<<" ("<<l_hom<<")"<<endl; 
 }
@@ -137,82 +122,80 @@ void load_grid() {
 	}
 }
 
-void load_model() {
-	load_grid();
+bool InputOutput::prepare_model_for_computation() {
+	INFO1 cout << "i: loading model " << mmx << " " << mmz << " vs " << (mx - 1) / dm + 1 << " " << (l_hom - 1) / dm + 1 << endl;
 
-	if (optimalisation.attenuate_boundary_n>0) {
-		mx -= 2*optimalisation.attenuate_boundary_n;
-		mz -=   optimalisation.attenuate_boundary_n;
+	if ((mmx>(mx - 1) / dm + 1) && (mmz>(l_hom - 1) / dm + 1)) {
+		int dmx = (mmx - 1) / ((mx - 1) / dm);
+		int dmz = (mmz - 1) / ((l_hom - 1) / dm);
+		cout << "i: downsampling model, size ratio " << dmx << " " << dmz << endl;
+		downsample_bigdim_grid(density_u, dmx, dmz, (mx - 1) / dm + 1, (l_hom - 1) / dm + 1);
+		downsample_bigdim_grid(density_w, dmx, dmz, (mx - 1) / dm + 1, (l_hom - 1) / dm + 1);
+		downsample_bigdim_grid(lam, dmx, dmz, (mx - 1) / dm + 1, (l_hom - 1) / dm + 1);
+		downsample_bigdim_grid(mu, dmx, dmz, (mx - 1) / dm + 1, (l_hom - 1) / dm + 1);
 	}
-
-	int mmx,mmz;
-	FILE* in = fopen(files.input_model,"r");
-	if (in == NULL) {
-		ERR("No input model file");
-		return;
-	}
-	fscanf(in,"%d %d\n",&mmx,&mmz);
-	fscanf(in,"%f %f %f %f %f %f %f\n",&co_density,&co_vP,&co_vS,&co_lam,&co_lam2mu,&co_mu,&co_muzx);
-		//nacitavat a interpolovat z velkosti modelu ()
-	for(int i=0;i<mmx;i++) 
-	for(int l=0;l<mmz;l++)
-		fscanf(in,"%f %f %f %f %f\n",&density_u[i][l],&density_w[i][l],&lam[i][l],&mu[i][l],&muzx[i][l]);
-
-	INFO1 cout<<"i: loading model "<<mmx<<" "<<mmz<<" vs "<<(mx-1)/dm+1<<" "<<(l_hom-1)/dm+1<<endl;
-
-	if ((mmx>(mx-1)/dm+1) && (mmz>(l_hom-1)/dm+1)) {
-		int dmx = (mmx-1)/((mx-1)/dm);
-		int dmz = (mmz-1)/((l_hom-1)/dm);
-		cout<<"i: downsampling model, size ratio "<<dmx<<" "<<dmz<<endl;
-		downsample_bigdim_grid(density_u,dmx,dmz,(mx-1)/dm+1,(l_hom-1)/dm+1);
-		downsample_bigdim_grid(density_w,dmx,dmz,(mx-1)/dm+1,(l_hom-1)/dm+1);
-		downsample_bigdim_grid(lam,dmx,dmz,(mx-1)/dm+1,(l_hom-1)/dm+1);
-		downsample_bigdim_grid(mu,dmx,dmz,(mx-1)/dm+1,(l_hom-1)/dm+1);
-	}
-	else if ((mmx!=(mx-1)/dm+1)||(mmz!=(l_hom-1)/dm+1)) {
+	else if ((mmx != (mx - 1) / dm + 1) || (mmz != (l_hom - 1) / dm + 1)) {
 		//cout<<"WARNING: model "<<mmx<<"x"<<mmz<<" doesn't equal sparse grid "<<(mx-1)/dm+1<<"x"<<(l_hom-1)/dm+1<<". We need to interpolate."<<endl;
-		int dmx = ((mx-1)/dm)/(mmx-1);
-		int dmz = ((l_hom-1)/dm)/(mmz-1);
+		int dmx = ((mx - 1) / dm) / (mmx - 1);
+		int dmz = ((l_hom - 1) / dm) / (mmz - 1);
 
-		if ((dmz<1)||(dmx<1)) {
-			char* s="";
-			sprintf(s,"wrong spacing X %d Z %d",dmx,dmz);
+		if ((dmz<1) || (dmx<1)) {
+			char* s = "";
+			sprintf(s, "wrong spacing X %d Z %d", dmx, dmz);
 			ERR(s);
-			return;
+			return false;
 		}
-		if (((mx-1)/dm)%(mmx-1)!=0) cout<<"WARNING: number of grid points in x-axis can't be matched to sparse model grid"<<endl;
-		if (((l_hom-1)/dm)%(mmz-1)!=0) cout<<"WARNING: number of grid points in z-axis can't be matched to sparse model grid"<<endl;
+		if (((mx - 1) / dm) % (mmx - 1) != 0) cout << "WARNING: number of grid points in x-axis can't be matched to sparse model grid" << endl;
+		if (((l_hom - 1) / dm) % (mmz - 1) != 0) cout << "WARNING: number of grid points in z-axis can't be matched to sparse model grid" << endl;
 
-		interpolate_bigdim_grid(density_u,dmx,dmz,(mx-1)/dm,(l_hom-1)/dm);
-		interpolate_bigdim_grid(density_w,dmx,dmz,(mx-1)/dm,(l_hom-1)/dm);
-		interpolate_bigdim_grid(lam,dmx,dmz,(mx-1)/dm,(l_hom-1)/dm);
-		interpolate_bigdim_grid(mu,dmx,dmz,(mx-1)/dm,(l_hom-1)/dm);
+		interpolate_bigdim_grid(density_u, dmx, dmz, (mx - 1) / dm, (l_hom - 1) / dm);
+		interpolate_bigdim_grid(density_w, dmx, dmz, (mx - 1) / dm, (l_hom - 1) / dm);
+		interpolate_bigdim_grid(lam, dmx, dmz, (mx - 1) / dm, (l_hom - 1) / dm);
+		interpolate_bigdim_grid(mu, dmx, dmz, (mx - 1) / dm, (l_hom - 1) / dm);
 		//interpolate_sparse_grid(muzx,dmx,dmz,(mx-1)/dm,(l_hom-1)/dm);
 	}
-}
 
-void loadModel() {
-	load_model();
 
-	interpolate_bigdim_grid(density_u,dm,dm,mx-1,l_hom-1);
-	interpolate_bigdim_grid(density_w,dm,dm,mx-1,l_hom-1);
-	interpolate_bigdim_grid(lam,dm,dm,mx-1,l_hom-1);
-	interpolate_bigdim_grid(mu,dm,dm,mx-1,l_hom-1);
+	interpolate_bigdim_grid(density_u, dm, dm, mx - 1, l_hom - 1);
+	interpolate_bigdim_grid(density_w, dm, dm, mx - 1, l_hom - 1);
+	interpolate_bigdim_grid(lam, dm, dm, mx - 1, l_hom - 1);
+	interpolate_bigdim_grid(mu, dm, dm, mx - 1, l_hom - 1);
 	//interpolate_sparse_grid(muzx,dm,dm,mx-1,l_hom-1);
 
 	add_boundary_layer();
 
 	//neviem, preco to tu musi byt.. je to divne..
-	for(int l=l_hom;l<l_hom+4;l++)
-	for(int i=0;i<=mx;i++) {
+	for (int l = l_hom; l<l_hom + 4; l++)
+		for (int i = 0; i <= mx; i++) {
 		density_u[i][l] = co_density;
 		density_w[i][l] = co_density;
 
-		 mu[i][l] = co_mu;
+		mu[i][l] = co_mu;
 		lam[i][l] = co_lam;
-		muzx[i][l]= co_muzx;
-	}
+		muzx[i][l] = co_muzx;
+		}
 
 	interpolate_muzx_from_mu();
+	return true;
+}
+
+bool InputOutput::load_model() {
+	int mmx,mmz,mmz_hom;
+	FILE* in = fopen(files.input_model,"r");
+	if (in == NULL) {
+		ERR("No input model file");
+		return false;
+	}
+	fscanf(in,"%d %d %d\n",&mmx,&mmz_hom,&mmz);
+	fscanf(in,"%f %f %f\n",&co_density,&co_lam,&co_mu);
+	co_lam2mu = co_lam + 2 * co_mu;
+
+	INFO1 cout << "i: loading model " << mmx << " x " << mmz_hom << " (" << mmz << ")" << endl;
+	for(int i=0;i<mmx;i++) 
+	for(int l=0;l<mmz;l++)
+		fscanf(in,"%f %f %f %f %f\n",&density_u[i][l],&density_w[i][l],&lam[i][l],&mu[i][l],&muzx[i][l]);
+
+	fclose(in);
+	return prepare_model_for_computation();
 }
 

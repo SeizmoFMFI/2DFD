@@ -108,27 +108,3 @@ void record_at_receivers(const int iter) {
 	}
 }
 
-void record_at_source(const int iter) {
-	if (iter==1) {
-		char s[256] ="";
-		sprintf(s,"%s_%d.txt",files.records_at_src,active_source);	
-		
-		out_src = fopen(s,"w");
-		fprintf(out_src,"%d %d\n",1,max_num_iter);
-		
-		for(int j=1;j<iter;j++)
-			fprintf(out_src,"%f %f\n",0.0f,0.0f);
-		opened_src = true;
-	}
-	
-	if (opened_src) {
-		int tx=src[0].x;
-		int tz=src[0].z;
-		fprintf(out_src,"%f %f\n",u[tx][tz],w[tx][tz]);
-
-		if (iter == max_num_iter) {
-			fclose(out_src);
-			opened_src = false;
-		}
-	}
-}

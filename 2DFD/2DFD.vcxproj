@@ -85,10 +85,11 @@
     <ClCompile Include="input_source.cpp" />
     <ClCompile Include="interior_stress.cpp" />
     <ClCompile Include="interior_velocity.cpp" />
+    <ClCompile Include="io.cpp" />
     <ClCompile Include="IO_state.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nonreflecting.cpp" />
-    <ClCompile Include="optimalisation.cpp" />
+    <ClCompile Include="nonreflecting_init.cpp" />
     <ClCompile Include="record.cpp" />
     <ClCompile Include="store_boundary.cpp" />
     <ClCompile Include="time_function.cpp" />
@@ -102,7 +103,6 @@
     <ClInclude Include="IO.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="nonreflecting.h" />
-    <ClInclude Include="optimalisation.h" />
     <ClInclude Include="receiver.h" />
     <ClInclude Include="source.h" />
     <ClInclude Include="velocity_update.h" />

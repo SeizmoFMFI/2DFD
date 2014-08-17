@@ -1,16 +1,27 @@
 #include "global.h"
-int max_num_iter,source_num_active_iter,tmp;
-int key_typ_src_function,record_every_nth_step;
+int max_num_iter,tmp;
 
-//sprintf (name,"sirenia_stanice/out_at_%d_riedke.dat",zdroj);
-void loadData() {
+bool InputOutput::load_data() {
 	FILE* in = fopen(files.input_data,"r");
 	if (in == NULL) {
 		ERR("No input data file");
+		return false;
 	}
-	tmp = fscanf(in,"%d %d",&max_num_iter,&record_every_nth_step);
-	tmp = fscanf(in,"%f",&dt);
-	tmp = fscanf(in,"%d",&optimalisation.iter_when_save_state);
+
+	float time;
+	tmp = fscanf(in, "%d", &mx);
+	tmp = fscanf(in, "%f", &time);
+	tmp = fscanf(in, "%f", &dt);
+	max_num_iter = (int)(time / dt);
+
+	tmp = fscanf(in, "%f", &time);
+	iter_when_record_snapshot = (int)(time / dt);
+	tmp = fscanf(in, "%d", &record_sparse_every_n_binary);
+	tmp = fscanf(in, "%d", &record_sparse_every_n_txt);
+	tmp = fscanf(in, "%d", &sparse_spacing);
 
 	fclose(in);
+	return true;
 }
+
+
