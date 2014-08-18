@@ -5,7 +5,7 @@ int l_hom,mx,mx1,mx2,mx3,mz,mz1,mz2,mz3,dm;
 float h,dt;
 
 float lam[BIGDIM][BIGDIM],mu[BIGDIM][BIGDIM],muzx[BIGDIM][BIGDIM],density_u[BIGDIM][BIGDIM],density_w[BIGDIM][BIGDIM];
-float co_density,co_lam,co_mu,co_lam2mu,co_muzx,co_vS,co_vP;
+float co_density,co_lam,co_mu,co_lam2mu;
 
 void interpolate_bigdim_grid(float a[][BIGDIM],const int dm,const int tox,const int toz) {
 	if (dm == 1)
@@ -130,14 +130,16 @@ bool InputOutput::prepare_model_for_computation(const int mmx,const int mml) {
 	//neviem, preco to tu musi byt.. je to divne..
 	//asi niekde v disp/velocity update saham mimo pola..
 	//chcelo by to opravit...
-	for (int l = l_hom; l<l_hom + 4; l++)
-	for (int i = 0; i <= mx; i++) {
-		density_u[i][l] = co_density;
-		density_w[i][l] = co_density;
+	//bug issue 3
+	for (int l = l_hom; l < l_hom + 4; l++) {
+		for (int i = 0; i <= mx; i++) {
+			density_u[i][l] = co_density;
+			density_w[i][l] = co_density;
 
-		mu[i][l] = co_mu;
-		lam[i][l] = co_lam;
-		muzx[i][l] = co_muzx;
+			mu[i][l] = co_mu;
+			lam[i][l] = co_lam;
+			muzx[i][l] = co_mu;
+		}
 	}
 
 	interpolate_muzx_from_mu();

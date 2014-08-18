@@ -107,9 +107,6 @@
     <ClInclude Include="displacement_update.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="files.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>

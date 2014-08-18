@@ -1,11 +1,6 @@
 #include "global.h" 
 
-void Optimalisation::check_for_save(const int iter) {
-	if (iter == iter_when_save_state) 
-		record_state();
-}
-
-void Optimalisation::record_state() {
+void InputOutput::record_snapshot(const int active_source) {
 	char s[256];
 	sprintf(s,"%s_%d.bin",files.snapshot,active_source);
 	cout<<"i: recording state "<<active_source<<" "<<s<<endl;

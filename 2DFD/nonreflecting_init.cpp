@@ -6,7 +6,7 @@ float ale01[BIGDIM], ale02[BIGDIM], ale10[BIGDIM], ale11[BIGDIM], ale12[BIGDIM],
 		co_ari01, co_ari02, co_ari10, co_ari11, co_ari12, co_ari20, co_ari21, co_ari22,
 		co_abt01, co_abt02, co_abt10, co_abt11, co_abt12, co_abt20, co_abt21, co_abt22;
 
-void set_nonreflecting_coeff() {
+void NonReflectingEmermanStephenmaxP::set_nonreflecting_coeff() {
 	//_________________________________ Emerman & Stephen, max. P-w. att. ___
 	float t1, t2, alfa;
 
@@ -68,7 +68,7 @@ void set_nonreflecting_coeff() {
 	co_abt21 = -1.0f;
 	co_abt22 = 0.0f;
 }
-void set_starting_values_for_boundaries() {
+void NonReflectingEmermanStephenmaxP::set_starting_values_for_boundaries() {
 	for (int i = 0; i<mx; i++) {
 		stored_u_mz1_level0[i] = 0;
 		stored_u_mz2_level0[i] = 0;

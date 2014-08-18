@@ -3,7 +3,7 @@
 void attenuate_horizontal_line(const int l) {
 	//similar function in displacement_int.cpp
 	float k = ((float)(attenuate_boundary_n - (mz - l))) / attenuate_boundary_n;
-	k = 1 - 0.05*SQR(k);
+	k = 1 - 0.05f*SQR(k);
 
 	for(int i=1;i<mx;i++)
       u[i][l] *= k;

@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="displacement_update.h" />
-    <ClInclude Include="files.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="model.h" />

@@ -1,19 +1,9 @@
 #include "global.h"
 #include <string>
 
-void record_sparse_data() {
-	FILE *out = fopen(files.sparse_grid_data,"w");
-	SPARSE;
-	fprintf(out,"%d %d\n",upi,upl);
-	fprintf(out,"%f %f\n",h*dm,dt);
-	fclose(out);
-}
-void record_sparse(const int iter) {
-	if (iter==0)
-		record_sparse_data();
-
+void InputOutput::record_sparse_binary(const int iter) {
 	char s[256] ="";
-	sprintf(s,"%s_%d.bin",files.sparse_direct_field,iter);
+	sprintf(s,"%s_%d.bin",files.sparse_field_binary,iter);
 
 	FILE *out = fopen(s,"wb");
 	int size = sizeof(u[0][0]);
@@ -59,7 +49,7 @@ void record_java(const int iter) {
 		return;
 	char fn[256] ="";
 	
-	sprintf(fn,"%s_%d_src_%d.txt",files.sparse_java_direct,iter,active_source);
+	sprintf(fn,"%s_%d_src_%d.txt",io.files.sparse_java_direct,iter,active_source);
 
 	dm*=2;
 	//dm/=4;
@@ -75,36 +65,25 @@ void record_java(const int iter) {
 	dm/=2;
 }
 
-FILE *out_rec,*out_src;
-bool opened_rec=false,opened_src=false;
-void record_at_receivers(const int iter) {
-	if (iter == 1) {
+FILE *out_rec;
+void InputOutput::record_at_receivers(const int iter,const int active_source) {
+	if (iter == 0) {
 		char s[256] ="";
 		sprintf(s,"%s_%d.txt",files.records_from_src,active_source);
 		
 		out_rec = fopen(s,"w");
 		fprintf(out_rec,"%d\n",n_rec);
-
-		for(int j=1;j<iter;j++) {
-			for(int i=0;i<n_rec;i++)
-				fprintf(out_rec,"%f %f ",0.0f,0.0f);
-			fprintf(out_rec,"\n");
-		}
-		opened_rec=true;
 	}
 
-	if (opened_rec) {
-		for(int i=0;i<n_rec;i++) {
-			int tx = rec[i].x;
-			int tz = rec[i].z;
-			fprintf(out_rec,"%f %f %f %f",u[tx][tz],w[tx][tz],vu[tx][tz],vw[tx][tz]);
-		}
-		fprintf(out_rec,"\n");
+	for(int i=0;i<n_rec;i++) {
+		int tx = rec[i].x;
+		int tz = rec[i].z;
+		fprintf(out_rec,"%f %f %f %f",u[tx][tz],w[tx][tz],vu[tx][tz],vw[tx][tz]);
+	}
+	fprintf(out_rec,"\n");
 
-		if (iter == max_num_iter) {
-			fclose(out_rec);
-			opened_rec = false;
-		}
+	if (iter == max_num_iter-1) {
+		fclose(out_rec);
 	}
 }
 

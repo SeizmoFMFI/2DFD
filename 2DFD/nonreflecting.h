@@ -2,6 +2,14 @@
 #define NONREFLECTING_H
 #include "global.h"
 
+class NonReflectingEmermanStephenmaxP {
+public:
+	void set_nonreflecting_coeff(), set_starting_values_for_boundaries();
+	float co_vP;
+};
+
+extern NonReflectingEmermanStephenmaxP nonreflecting;
+
 const static int  attenuate_boundary_n = 100; //180;
 
 extern float stored_u_1_level0[BIGDIM],stored_u_2_level0[BIGDIM],stored_u_3_level0[BIGDIM],
@@ -30,4 +38,5 @@ extern float ale01[BIGDIM],ale02[BIGDIM],ale10[BIGDIM],ale11[BIGDIM],ale12[BIGDI
 	  co_ale01,co_ale02,co_ale10,co_ale11,co_ale12,co_ale20,co_ale21,co_ale22,
 	  co_ari01,co_ari02,co_ari10,co_ari11,co_ari12,co_ari20,co_ari21,co_ari22,
 	  co_abt01,co_abt02,co_abt10,co_abt11,co_abt12,co_abt20,co_abt21,co_abt22;
+
 #endif

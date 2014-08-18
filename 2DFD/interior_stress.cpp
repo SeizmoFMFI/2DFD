@@ -19,7 +19,7 @@ void hom_stress_int(int l) {
 	
 	for(int i=2;i<mx1;i++) {
 		compute_e12_int(i,ll);
-		tzx_mline[i][ll_ind] = co_muzx*e12;
+		tzx_mline[i][ll_ind] = co_mu*e12;
 	}
 }
 

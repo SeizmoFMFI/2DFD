@@ -45,7 +45,7 @@ void double_couple_source(const int &i,const int &xi,const int &zi,const float &
               vw[xi-1][zi]   -= mzx*I;
 }
 
-void velocity_update(const int iter) {
+void velocity_update(const int iter, const int active_source) {
      horizontal_line_0();
      horizontal_line_1();
      horizontal_line_2();
@@ -58,16 +58,13 @@ void velocity_update(const int iter) {
      horizontal_line_mz3();
      horizontal_line_mz2();
 
-     if (iter<source_num_active_iter) {
-		 int xi=src[active_source].x;
-		 int zi=src[active_source].z;
+	 int xi=src[active_source].x;
+	 int zi=src[active_source].z;
 
-         if (src_type==1)                  //explosive source
-			 explosive_source(active_source,xi,zi,src[active_source].f[iter]); 
-         else if (src_type==2)                 //double-couple
-			 double_couple_source(active_source,xi,zi,src[active_source].f[iter]);
-		 else 
-			 ERR("no such source type");
-		 cout<<iter<<" "<<u[xi][zi]<<" "<<w[xi][zi]<<" "<<vu[xi][zi]<<" "<<vw[xi][zi]<<" "<<src[active_source].f[iter]<<endl;
-     }
+     if (src_type==1)                  //explosive source
+		 explosive_source(active_source,xi,zi,src[active_source].f[iter]); 
+     else if (src_type==2)                 //double-couple
+		 double_couple_source(active_source,xi,zi,src[active_source].f[iter]);
+	 else 
+		 ERR("no such source type");
 }

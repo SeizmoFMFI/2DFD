@@ -33,11 +33,13 @@ void set_starting_values() {
 		vu[i][l]=0;
 	}
 
-	 co_lam2mu /= h;
-	 co_mu     /= h;
-	 co_lam    /= h;
+	co_mu     /= h;
+	co_lam    /= h;
+	co_lam2mu = co_lam + 2 * co_mu;
 	 
-	 co_density = dt/(h*co_density);
+	co_density = dt/(h*co_density);
+
+	nonreflecting.co_vP = sqrtf(co_lam2mu*co_density); //not sure about this..
 
 	for(int l=0;l<l_hom+4;l++)
 	for(int i=0;i<mx;i++) {
@@ -57,7 +59,7 @@ void set_starting_values() {
 		}
 	}
 
-	set_starting_values_for_boundaries();
+	nonreflecting.set_starting_values_for_boundaries();
 }
 
 void auxiliary() {
@@ -69,7 +71,7 @@ void auxiliary() {
 	 mz3   =mz-3;
      
 	set_starting_values();
-	set_nonreflecting_coeff();
+	nonreflecting.set_nonreflecting_coeff();
 }
 
 float **allocate2Dzeros(const int &sizeX,const int &sizeY) {

@@ -1,5 +1,6 @@
 #include "global.h"
 InputOutput io;
+NonReflectingEmermanStephenmaxP nonreflecting;
 
 void main_forward() {
 	for(int i=0;i<n_src;i++) {
@@ -16,7 +17,7 @@ int main() {
 	bool loadok = io.load();
 	if (!loadok) {
 		ERR("loading went wrong");
-		return;
+		return -1;
 	}
 	aux_charakteristika();
 

@@ -7,6 +7,6 @@ const char* Files::input_source		= "input/input_source.txt";
 
 const char* Files::snapshot			= "output/snapshot_src";
 
-const char* Files::sparse_field_binary	= "output/sparse_grid/u_w.bin";
-const char* Files::sparse_field_txt		= "output/sparse_grid/u_w.txt";
-const char* Files::records_from_src		= "output/records/u_w_from_src";
+const char* Files::sparse_field_binary	= "output/sparse_grid/u_w";
+const char* Files::sparse_field_txt		= "output/sparse_grid/u_w";
+const char* Files::records_from_src		= "output/records/u_w_vu_vw_from_src";
