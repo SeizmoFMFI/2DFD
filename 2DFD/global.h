@@ -27,7 +27,7 @@ using namespace std;
 #define SQR(x) ((x) * (x))
 #define FORALL for(int i=0;i<mx;i++) for(int l=0;l<mz;l++)
 #define FORINH for(int i=0;i<mx;i++) for(int l=0;l<l_hom;l++)*
-#define SPARSE const int upi = (mx-1)/dm+1-2*attenuate_boundary_n/dm; const int upl = (l_hom-1)/dm+1;
+#define SPARSE const int upi = (mx-1-2*attenuate_boundary_n)/dm; const int upl = (l_hom-1)/dm+1;
 /*
 #define FORSPARSE_NODECLARE for(int i=0;i<upi;i++) for(int l=0;l<upl;l++)
 #define FORSPARSE SPARSE FORSPARSE_NODECLARE

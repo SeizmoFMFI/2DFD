@@ -14,7 +14,7 @@ public:
 
 	bool load(), load_data(), load_model(), load_sources(), load_receivers();
 	bool prepare_model_for_computation(const int mmx, const int mml);
-	void record_snapshot(const int active_source), record_sparse_binary(const int iter), record_sparse_txt(const int iter);
+	void record_snapshot(const int active_source), record_sparse_binary(const int active_source, const int iter), record_sparse_txt(const int active_source, const int iter);
 	void check_recording();
 
 	int record_sparse_every_n_binary, record_sparse_every_n_txt, iter_when_record_snapshot;

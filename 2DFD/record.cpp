@@ -1,20 +1,19 @@
 #include "global.h"
 #include <string>
 
-void InputOutput::record_sparse_binary(const int iter) {
+void InputOutput::record_sparse_binary(const int active_source, const int iter) {
 	char s[256] ="";
-	sprintf(s,"%s_%d.bin",files.sparse_field_binary,iter);
+	sprintf(s,"%s_src_%_iter_%d.bin",files.sparse_field_binary,active_source,iter);
 
 	FILE *out = fopen(s,"wb");
 	int size = sizeof(u[0][0]);
-	
+
 	if (dm==1) {
-		SPARSE;
-		for(int i=0;i<upi;i++) {
-			fwrite (u[i*dm], size, upl, out);
-			fwrite (w[i*dm], size, upl, out);
-			fwrite (vu[i*dm],size, upl, out);
-			fwrite (vw[i*dm],size, upl, out);
+		for(int i=0;i<mx;i++) {
+			fwrite(u[i + attenuate_boundary_n], size, l_hom, out);
+			fwrite(w[i + attenuate_boundary_n], size, l_hom, out);
+			fwrite(vu[i + attenuate_boundary_n], size, l_hom, out);
+			fwrite(vw[i + attenuate_boundary_n], size, l_hom, out);
 		}
 		fclose(out);
 	}
@@ -24,12 +23,14 @@ void InputOutput::record_sparse_binary(const int iter) {
 		float *tmpw  = new float[upl];
 		float *tmpvu = new float[upl];
 		float *tmpvw = new float[upl];
+		int ii;
 		for(int i=0;i<upi;i++) {
+			ii = i*dm + attenuate_boundary_n;
 			for(int l=0;l<upl;l++) {
-				tmpu[l]  = u[i*dm][l*dm];
-				tmpw[l]  = w[i*dm][l*dm];
-				tmpvu[l] = vu[i*dm][l*dm];
-				tmpvw[l] = vw[i*dm][l*dm];
+				tmpu[l] = u[ii][l*dm];
+				tmpw[l] = w[ii][l*dm];
+				tmpvu[l] = vu[ii][l*dm];
+				tmpvw[l] = vw[ii][l*dm];
 			}
 			fwrite (tmpu, size, upl, out);
 			fwrite (tmpw, size, upl, out);
@@ -44,25 +45,22 @@ void InputOutput::record_sparse_binary(const int iter) {
 	}
 }
 
-void record_java(const int iter) {
-	if (iter%20!=1) 
-		return;
+void InputOutput::record_sparse_txt(const int active_source, const int iter) {
 	char fn[256] ="";
 	
-	sprintf(fn,"%s_%d_src_%d.txt",io.files.sparse_java_direct,iter,active_source);
+	sprintf(fn, "%s_src_%d_%d.txt", io.files.sparse_field_txt, active_source, iter);
 
-	dm*=2;
-	//dm/=4;
 	FILE *out = fopen(fn,"w");
-	fprintf(out,"%d %d\n",(mx-1)/dm+1,(mz-1)/dm+1);
 
-	for(int i=0;i<(mx-1)/dm+1;i++)
-	for(int l=0;l<(mz-1)/dm+1;l++){
-		fprintf(out,"%f %f %f %f\n",u[i*dm][l*dm],w[i*dm][l*dm],vu[i*dm][l*dm],vw[i*dm][l*dm]);
+	SPARSE;
+	fprintf(out, "%d %d\n", upi, upl);
+	for (int i = 0; i < upi; i++) {
+		int ii = i*dm + attenuate_boundary_n;
+		for (int l = 0; l < upl; l++) {
+			fprintf(out, "%f %f %f %f\n", u[ii][l*dm], w[ii][l*dm], vu[ii][l*dm], vw[ii][l*dm]);
+		}
 	}
 	fclose(out);
-	//dm*=4;
-	dm/=2;
 }
 
 FILE *out_rec;

@@ -1,6 +1,7 @@
 #include "global.h"
 
 int n_src,src_type,src_time_function;
+float src_char_time;
 Source src[50];
 
 bool InputOutput::load_sources() {

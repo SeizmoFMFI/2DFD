@@ -2,7 +2,8 @@
 #define SOURCE_H
 using namespace std;
 
-extern int n_src, src_type, src_time_function, src_char_time;
+extern int n_src, src_type, src_time_function;
+extern float src_char_time;
 
 class Source {
 public:
